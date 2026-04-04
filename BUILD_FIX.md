@@ -22,7 +22,7 @@ This happened because:
 {
   "extends": "next/core-web-vitals",
   "rules": {
-    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
     "react-hooks/exhaustive-deps": "warn"
   }
 }
