@@ -142,7 +142,7 @@ export default function SearchBox({
         <div className="absolute z-50 w-full mt-1 rounded-xl border border-white/10 bg-surface-secondary/95 backdrop-blur-xl shadow-glass overflow-hidden">
           <div className="flex items-center gap-3 px-4 py-3 text-white/40 text-sm">
             <Search className="w-4 h-4" />
-            No places found for "{value}"
+            No places found for &quot;{value}&quot;
           </div>
         </div>
       )}
