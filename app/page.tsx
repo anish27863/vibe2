@@ -56,7 +56,7 @@ export default function HomePage() {
   // ── Route state ──────────────────────────────────────────────────────────
   const {
     routes, selectedRoute, isLoading, error,
-    fetchRoutes, selectRoute, clearRoutes,
+    fetchRoutes, selectRoute, clearRoutes, restoreRoute,
   } = useRoutes();
 
   // ── Preferences ──────────────────────────────────────────────────────────
@@ -101,6 +101,15 @@ export default function HomePage() {
     setDestCoords(originCoords);
     clearRoutes();
   }, [origin, destination, originCoords, destCoords, clearRoutes]);
+
+  // ── Restore saved route ───────────────────────────────────────────────────
+  const handleRestoreRoute = useCallback((savedRoute: any) => {
+    setOrigin(savedRoute.origin);
+    setDestination(savedRoute.destination);
+    setOriginCoords(savedRoute.origin_coords);
+    setDestCoords(savedRoute.destination_coords);
+    restoreRoute(savedRoute.route_data);
+  }, [restoreRoute]);
 
   // ── Search ────────────────────────────────────────────────────────────────
   const handleSearch = useCallback(async () => {
@@ -177,6 +186,7 @@ export default function HomePage() {
           error={error}
           onRouteSelect={selectRoute}
           onSaveRoute={handleSaveRoute}
+          onRestoreRoute={handleRestoreRoute}
           saveState={saveState}
           onSearch={handleSearch}
           onRetry={handleSearch}

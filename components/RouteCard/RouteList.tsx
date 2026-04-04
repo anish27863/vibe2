@@ -17,6 +17,7 @@ interface RouteListProps {
   error:         string | null;
   onRouteSelect: (route: SmartRouteOption) => void;
   onSaveRoute:   (route: SmartRouteOption) => void;
+  saveState:     'idle' | 'saving' | 'saved' | 'error' | 'needs-auth';
   onRetry?:      () => void;
 }
 
@@ -27,6 +28,7 @@ export default function RouteList({
   error,
   onRouteSelect,
   onSaveRoute,
+  saveState,
   onRetry,
 }: RouteListProps) {
   // ── Loading State ──────────────────────────────────────────────────────
@@ -112,6 +114,7 @@ export default function RouteList({
           isSelected={selectedRoute?.id === route.id}
           onSelect={onRouteSelect}
           onSave={onSaveRoute}
+          saveState={saveState}
         />
       ))}
     </div>

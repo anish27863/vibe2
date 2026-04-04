@@ -21,6 +21,7 @@ interface RouteCardProps {
   isSelected: boolean;
   onSelect:   (route: SmartRouteOption) => void;
   onSave?:    (route: SmartRouteOption) => void;
+  saveState?: 'idle' | 'saving' | 'saved' | 'error' | 'needs-auth';
   rank:       number;
 }
 
@@ -38,7 +39,7 @@ const TRAFFIC_BG: Record<string, string> = {
   very_high: 'bg-red-700/15 text-red-500',
 };
 
-export default function RouteCard({ route, isSelected, onSelect, onSave, rank }: RouteCardProps) {
+export default function RouteCard({ route, isSelected, onSelect, onSave, saveState, rank }: RouteCardProps) {
   const delaySeconds = route.totalDurationInTraffic - route.totalDuration;
   const hasDelay     = delaySeconds > 60;
   const labelColor   = getLabelColor(route.label);
@@ -203,10 +204,21 @@ export default function RouteCard({ route, isSelected, onSelect, onSave, rank }:
       {isSelected && onSave && (
         <button
           onClick={(e) => { e.stopPropagation(); onSave(route); }}
-          className="mt-3 w-full py-2 rounded-lg bg-brand-500/20 hover:bg-brand-500/30 text-brand-300 text-xs font-medium transition-colors flex items-center justify-center gap-1"
+          disabled={saveState === 'saving'}
+          className={cn(
+            'mt-3 w-full py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1.5',
+            saveState === 'saving' ? 'bg-white/5 text-white/40 cursor-not-allowed' :
+            saveState === 'saved'  ? 'bg-emerald-500/20 text-emerald-300' :
+            'bg-brand-500/20 hover:bg-brand-500/30 text-brand-300'
+          )}
         >
-          <Zap className="w-3 h-3" />
-          Save this route
+          {saveState === 'saving' ? (
+            <><div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" /> Saving…</>
+          ) : saveState === 'saved' ? (
+            <>✓ Saved Successfully</>
+          ) : (
+            <><Zap className="w-3 h-3" /> Save this route</>
+          )}
         </button>
       )}
     </div>

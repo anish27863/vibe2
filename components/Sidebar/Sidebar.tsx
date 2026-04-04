@@ -38,6 +38,8 @@ interface SidebarProps {
   error:         string | null;
   onRouteSelect: (route: SmartRouteOption) => void;
   onSaveRoute:   (route: SmartRouteOption) => void;
+  onRestoreRoute:(route: any) => void;
+  saveState:     'idle' | 'saving' | 'saved' | 'error' | 'needs-auth';
   onSearch:      () => void;
   onRetry?:      () => void;
 
@@ -52,7 +54,7 @@ export default function Sidebar({
   onOriginSelect, onDestinationSelect,
   onSwapLocations,
   routes, selectedRoute, isLoading, error,
-  onRouteSelect, onSaveRoute, onSearch, onRetry,
+  onRouteSelect, onSaveRoute, onRestoreRoute, saveState, onSearch, onRetry,
   preferences, onPreferenceUpdate,
 }: SidebarProps) {
   const { user, signOut } = useAuth();
@@ -216,11 +218,18 @@ export default function Sidebar({
               error={error}
               onRouteSelect={onRouteSelect}
               onSaveRoute={onSaveRoute}
+              saveState={saveState}
               onRetry={onRetry}
             />
           )}
           {activeTab === 'saved' && (
-            <SavedRoutesList userId={user?.id} />
+            <SavedRoutesList 
+              userId={user?.id} 
+              onRestore={(r) => {
+                onRestoreRoute(r);
+                setActiveTab('routes');
+              }}
+            />
           )}
           {activeTab === 'history' && (
             <div className="py-12 text-center text-white/30 text-sm">History coming soon</div>
@@ -241,7 +250,7 @@ export default function Sidebar({
 
 // ─── Saved Routes Mini-List ───────────────────────────────────────────────────
 
-function SavedRoutesList({ userId }: { userId?: string }) {
+function SavedRoutesList({ userId, onRestore }: { userId?: string, onRestore?: (r: any) => void }) {
   const [routes, setRoutes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -270,7 +279,11 @@ function SavedRoutesList({ userId }: { userId?: string }) {
   return (
     <div className="space-y-2">
       {routes.map((r) => (
-        <div key={r.id} className="p-3 rounded-xl bg-white/4 border border-white/8">
+        <div 
+          key={r.id} 
+          onClick={() => onRestore?.(r)}
+          className="p-3 rounded-xl bg-white/4 border border-white/8 hover:bg-white/10 cursor-pointer transition-colors"
+        >
           <p className="text-sm font-medium text-white truncate">{r.name}</p>
           <p className="text-xs text-white/40 mt-1 truncate">{r.origin} → {r.destination}</p>
           <p className="text-xs text-white/25 mt-1">{new Date(r.created_at).toLocaleDateString()}</p>

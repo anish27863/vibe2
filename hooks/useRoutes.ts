@@ -26,6 +26,7 @@ interface UseRoutesActions {
   ) => Promise<void>;
   selectRoute: (route: SmartRouteOption) => void;
   clearRoutes: () => void;
+  restoreRoute: (route: SmartRouteOption) => void;
 }
 
 export function useRoutes(): UseRoutesState & UseRoutesActions {
@@ -113,6 +114,11 @@ export function useRoutes(): UseRoutesState & UseRoutesActions {
     setSelectedRoute(null);
     setError(null);
   }, []);
+  const restoreRoute = useCallback((route: SmartRouteOption) => {
+    setRoutes([route]);
+    setSelectedRoute(route);
+    setError(null);
+  }, []);
 
-  return { routes, selectedRoute, isLoading, error, fetchRoutes, selectRoute, clearRoutes };
+  return { routes, selectedRoute, isLoading, error, fetchRoutes, selectRoute, clearRoutes, restoreRoute };
 }
