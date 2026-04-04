@@ -156,11 +156,46 @@ The scoring algorithm (`lib/scoring.ts`) works as follows:
 
 ## 🚢 Deploying to Vercel
 
-```bash
-npx vercel --prod
-```
+### Quick Deploy
 
-Add all environment variables in Vercel Dashboard → Settings → Environment Variables.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone)
+
+### Manual Deployment
+
+1. **Push to GitHub:**
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git push -u origin main
+   ```
+
+2. **Import to Vercel:**
+   - Go to [vercel.com](https://vercel.com)
+   - Click "Add New Project"
+   - Import your GitHub repository
+   - Vercel auto-detects Next.js
+
+3. **Add Environment Variables:**
+   
+   In Vercel Dashboard → Settings → Environment Variables, add:
+   
+   ```env
+   ORS_API_KEY=your_ors_api_key
+   NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+   ```
+
+4. **Update Supabase Redirect URL:**
+   - In Supabase → Authentication → URL Configuration
+   - Add: `https://your-app.vercel.app/auth/callback`
+
+5. **Deploy!**
+   
+   Click "Deploy" and wait for the build to complete.
+
+📖 **Detailed deployment guide:** See [DEPLOYMENT.md](./DEPLOYMENT.md) for troubleshooting and advanced configuration.
 
 ---
 
