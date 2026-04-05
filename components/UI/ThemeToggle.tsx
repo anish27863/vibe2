@@ -19,7 +19,7 @@ export default function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="w-9 h-9 rounded-xl bg-white/5 border border-white/10" />
+      <div className="w-9 h-9 rounded-xl bg-white dark:bg-white/10 shadow-sm border border-gray-200 dark:border-white/10" />
     );
   }
 
@@ -27,7 +27,7 @@ export default function ThemeToggle() {
     <button
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-      className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 hover:text-white transition-all duration-150"
+      className="w-9 h-9 flex items-center justify-center rounded-xl bg-white dark:bg-white/10 hover:bg-gray-50 dark:hover:bg-white/20 shadow-sm border border-gray-200 dark:border-white/10 text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white transition-all duration-150"
     >
       {isDark
         ? <Sun  className="w-4 h-4" />

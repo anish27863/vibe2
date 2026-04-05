@@ -161,3 +161,22 @@
   background: rgba(255, 255, 255, 0.9);
   border-color: rgba(0, 0, 0, 0.08);
 }
+
+.light .leaflet-tooltip {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(0,0,0,0.12) !important;
+  color: #1a1a35 !important;
+}
+.light .leaflet-tooltip-bottom::before,
+.light .leaflet-tooltip-top::before {
+  border-bottom-color: rgba(255, 255, 255, 0.92) !important;
+  border-top-color: rgba(255, 255, 255, 0.92) !important;
+}
+.light .leaflet-control-zoom a {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(0,0,0,0.1) !important;
+  color: #4f46e5 !important;
+}
+.light .leaflet-control-zoom a:hover {
+  background: rgba(79, 70, 229, 0.1) !important;
+}
