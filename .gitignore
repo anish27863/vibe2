@@ -33,3 +33,9 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# Generated Docs & Scripts
+*.md
+!README.md
+setup-deployment.bat
+setup-deployment.sh
