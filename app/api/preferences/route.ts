@@ -18,8 +18,8 @@ async function createSupabaseServer() {
     {
       cookies: {
         get(name: string) { return cookieStore.get(name)?.value; },
-        set(name, value, options) { try { cookieStore.set({ name, value, ...options }); } catch { } },
-        remove(name, options) { try { cookieStore.set({ name, value: '', ...options }); } catch { } },
+        set(name: string, value: string, options: any) { try { cookieStore.set({ name, value, ...options }); } catch { } },
+        remove(name: string, options: any) { try { cookieStore.set({ name, value: '', ...options }); } catch { } },
       },
     }
   );
