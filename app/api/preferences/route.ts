@@ -10,16 +10,16 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { TABLES } from '@/lib/supabase';
 
-function createSupabaseServer() {
-  const cookieStore = cookies();
+async function createSupabaseServer() {
+  const cookieStore = await cookies();
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name: string)         { return cookieStore.get(name)?.value; },
-        set(name, value, options) { try { cookieStore.set({ name, value, ...options }); } catch {} },
-        remove(name, options)     { try { cookieStore.set({ name, value: '', ...options }); } catch {} },
+        get(name: string) { return cookieStore.get(name)?.value; },
+        set(name, value, options) { try { cookieStore.set({ name, value, ...options }); } catch { } },
+        remove(name, options) { try { cookieStore.set({ name, value: '', ...options }); } catch { } },
       },
     }
   );
@@ -27,7 +27,7 @@ function createSupabaseServer() {
 
 export async function GET() {
   try {
-    const supabase = createSupabaseServer();
+    const supabase = await createSupabaseServer();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) return NextResponse.json({ preferences: null });
@@ -47,7 +47,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const supabase = createSupabaseServer();
+    const supabase = await createSupabaseServer();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -58,17 +58,17 @@ export async function POST(req: NextRequest) {
       .from(TABLES.PREFERENCES)
       .upsert(
         {
-          user_id:                  user.id,
-          vehicle_type:             body.vehicleType,
-          travel_mode:              body.travelMode,
-          avoid_traffic:            body.avoidTraffic,
-          prefer_shortest_time:     body.preferShortestTime,
+          user_id: user.id,
+          vehicle_type: body.vehicleType,
+          travel_mode: body.travelMode,
+          avoid_traffic: body.avoidTraffic,
+          prefer_shortest_time: body.preferShortestTime,
           prefer_shortest_distance: body.preferShortestDistance,
-          bike_friendly:            body.bikeFriendly,
-          avoid_highways:           body.avoidHighways,
-          avoid_tolls:              body.avoidTolls,
-          dark_mode:                body.darkMode,
-          updated_at:               new Date().toISOString(),
+          bike_friendly: body.bikeFriendly,
+          avoid_highways: body.avoidHighways,
+          avoid_tolls: body.avoidTolls,
+          dark_mode: body.darkMode,
+          updated_at: new Date().toISOString(),
         },
         { onConflict: 'user_id' }
       )

@@ -12,15 +12,15 @@ import { cookies } from 'next/headers';
 import { TABLES } from '@/lib/supabase';
 
 function createSupabaseServer() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name: string)             { return cookieStore.get(name)?.value; },
-        set(name, value, options)     { try { cookieStore.set({ name, value, ...options }); } catch {} },
-        remove(name, options)         { try { cookieStore.set({ name, value: '', ...options }); } catch {} },
+        get(name: string) { return cookieStore.get(name)?.value; },
+        set(name, value, options) { try { cookieStore.set({ name, value, ...options }); } catch { } },
+        remove(name, options) { try { cookieStore.set({ name, value: '', ...options }); } catch { } },
       },
     }
   );
@@ -59,13 +59,13 @@ export async function POST(req: NextRequest) {
     const { data, error } = await supabase
       .from(TABLES.SAVED_ROUTES)
       .insert({
-        user_id:            user.id,
-        name:               name || `${origin} → ${destination}`,
+        user_id: user.id,
+        name: name || `${origin} → ${destination}`,
         origin,
         destination,
-        origin_coords:      originCoords,
+        origin_coords: originCoords,
         destination_coords: destinationCoords,
-        route_data:         routeData,
+        route_data: routeData,
         preferences,
       })
       .select()
